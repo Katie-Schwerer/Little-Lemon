@@ -1,0 +1,23 @@
+.testimony  {
+    margin: 0 auto;
+    width: 50%;
+}
+
+.testimony h2 {
+    font-family: 'Markazi Text', serif;
+    font-size: 4rem;
+    color: #333;
+    text-align: center;
+}
+
+.testimonials {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    margin: 2rem 0;
+    gap: 1rem;
+}
+
+
