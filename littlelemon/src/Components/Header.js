@@ -4,13 +4,15 @@ import bruchetta from '../Media/bruchetta.svg'
 import greeksalad from '../Media/greeksalad.jpg'
 import lemondessert from '../Media/lemondessert.jpg'
 import Card from './Card';
+import { useNavigate } from "react-router-dom";
 
 function Header() {
+    const navigate = useNavigate();
     return (
         <section className="header">
             <header>
                 <h2>This weeks specials!!</h2>
-                <button>Online Menu</button>
+                <button onClick={() => navigate("/booking")}>Online Menu</button>
             </header>
             <div className="cards">
                 <Card title="Bruchretta" description="Our bruchetta is made with fresh grilled bread spread with garlic and season olive oil." price="5.99" image={bruchetta} />
