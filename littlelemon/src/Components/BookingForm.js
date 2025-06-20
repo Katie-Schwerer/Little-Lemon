@@ -1,24 +1,14 @@
-import React, {useState} from 'react';
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useForm } from "react-hook-form";
 import '../Style/BookForm.css';
 
-
 function BookingForm(props) {
-    const [date, setDate] = useState(Date.now);
-    const [guests, setGuests] = useState(1);
-    const [occasion, setOccasion] = useState('');
-    const {handleSubmit} = useForm();
+    const { register, handleSubmit, formState: { errors } } = useForm();
     const navigate = useNavigate();
 
-    const handleDateChange = (event) => {
-        const selectedTime = event.target.value;
-        // Update the available times based on the selected date
-        props.dispatch({ type: 'UPDATE_TIMES', data: selectedTime });
-    };
-
     const onSubmit = (data) => {
-        alert(`Booking confirmed for ${guests} guests on ${date} for a ${occasion} occasion.`);
+        alert(`Booking confirmed for ${data.guests} guests on ${data.date} for a ${data.occasion} occasion.`);
         navigate('/confirmed');
     }
 
@@ -27,21 +17,52 @@ function BookingForm(props) {
             <h1>Book a Table</h1>
             <form onSubmit={handleSubmit(onSubmit)}>
                 <label htmlFor="res-date">Choose date</label>
-                <input type="date" id="res-date" value={date} onChange={e => setDate(e.target.value)} />
+                <input
+                    type="date"
+                    id="res-date"
+                    {...register("date", { required: "Date is required" })}
+                />
+                {errors.date && <span style={{color: "red"}}>{errors.date.message}</span>}
+
                 <label htmlFor="res-time">Choose time</label>
-                <select id="res-time" onChange={handleDateChange}>
+                <select
+                    id="res-time"
+                    {...register("time", { required: "Time is required" })}
+                >
+                    <option value="">Select a time</option>
                     {(props.availableTimes || []).map((time) => (
                         <option key={time} value={time}>{time}</option>
                     ))}
                 </select>
+                {errors.time && <span style={{color: "red"}}>{errors.time.message}</span>}
+
                 <label htmlFor="guests">Number of guests</label>
-                <input type="number" placeholder="1" min="1" max="10" id="guests" value={guests} onChange={e => setGuests(e.target.value)} />
+                <input
+                    type="number"
+                    placeholder="1"
+                    min="1"
+                    max="10"
+                    id="guests"
+                    {...register("guests", {
+                        required: "Number of guests is required",
+                        min: { value: 1, message: "At least 1 guest" },
+                        max: { value: 10, message: "No more than 10 guests" }
+                    })}
+                />
+                {errors.guests && <span style={{color: "red"}}>{errors.guests.message}</span>}
+
                 <label htmlFor="occasion">Occasion</label>
-                <select id="occasion" value={occasion} onChange={e => setOccasion(e.target.value)}>
-                    <option value="">Select an occasion</option>
-                    <option>Birthday</option>
-                    <option>Anniversary</option>
+                <select
+                    id="occasion"
+                    {...register("occasion", { required: "Occasion is required" })}
+                >
+                    <option value="" disabled>Select an occasion</option>
+                    <option value="none">None</option>
+                    <option value="birthday">Birthday</option>
+                    <option value="anniversary">Anniversary</option>
                 </select>
+                {errors.occasion && <span style={{color: "red"}}>{errors.occasion.message}</span>}
+
                 <input type="submit" value="Make Your reservation" />
             </form>
         </article>

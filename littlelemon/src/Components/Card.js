@@ -10,7 +10,7 @@ function Card(props) {
                 <p className="price">${props.price}</p>
             </div>
             <p className='description'>{props.description}</p>
-            <p className="order">Order a delivery</p>
+            <a className="order" href="/">Order a delivery</a>
         </div>
     )
 }
